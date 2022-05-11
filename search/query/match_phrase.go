@@ -89,7 +89,6 @@ func (q *MatchPhraseQuery) Searcher(i index.IndexReader, m mapping.IndexMapping,
 		phrase := tokenStreamToPhrase(tokens)
 		phraseQuery := NewMultiPhraseQuery(phrase, field)
 		phraseQuery.SetBoost(q.BoostVal.Value())
-		options.Slop = q.Slop
 		return phraseQuery.Searcher(i, m, options)
 	}
 	noneQuery := NewMatchNoneQuery()
