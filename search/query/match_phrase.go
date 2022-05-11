@@ -17,10 +17,10 @@ package query
 import (
 	"fmt"
 
+	index "github.com/blevesearch/bleve_index_api"
 	"github.com/ltraniello/bleve/v2/analysis"
 	"github.com/ltraniello/bleve/v2/mapping"
 	"github.com/ltraniello/bleve/v2/search"
-	index "github.com/blevesearch/bleve_index_api"
 )
 
 type MatchPhraseQuery struct {
