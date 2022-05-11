@@ -28,6 +28,7 @@ type MatchPhraseQuery struct {
 	FieldVal    string `json:"field,omitempty"`
 	Analyzer    string `json:"analyzer,omitempty"`
 	BoostVal    *Boost `json:"boost,omitempty"`
+	Slop		int		`json:"slop,omitempty"`
 }
 
 // NewMatchPhraseQuery creates a new Query object
@@ -61,6 +62,11 @@ func (q *MatchPhraseQuery) Field() string {
 	return q.FieldVal
 }
 
+func (q *MatchPhraseQuery) SetSlop(s int) {
+	q.Slop = s
+}
+
+
 func (q *MatchPhraseQuery) Searcher(i index.IndexReader, m mapping.IndexMapping, options search.SearcherOptions) (search.Searcher, error) {
 	field := q.FieldVal
 	if q.FieldVal == "" {
@@ -83,6 +89,7 @@ func (q *MatchPhraseQuery) Searcher(i index.IndexReader, m mapping.IndexMapping,
 		phrase := tokenStreamToPhrase(tokens)
 		phraseQuery := NewMultiPhraseQuery(phrase, field)
 		phraseQuery.SetBoost(q.BoostVal.Value())
+		options.Slop = q.Slop
 		return phraseQuery.Searcher(i, m, options)
 	}
 	noneQuery := NewMatchNoneQuery()
